@@ -1,11 +1,23 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 
+function detectSpatialMode(): boolean {
+  if (document.documentElement.classList.contains("is-spatial")) return true;
+  const w = window as any;
+  if (w.__webspatial || w.XR_ENV || w.SpatialSession) return true;
+  if (navigator.userAgent.includes("Vision") || navigator.userAgent.includes("visionOS")) return true;
+  return false;
+}
+
 export function useIsSpatial(): boolean {
   const [isSpatial, setIsSpatial] = useState(false);
 
   useEffect(() => {
     const check = () => {
-      setIsSpatial(document.documentElement.classList.contains("is-spatial"));
+      const spatial = detectSpatialMode();
+      if (spatial && !document.documentElement.classList.contains("is-spatial")) {
+        document.documentElement.classList.add("is-spatial");
+      }
+      setIsSpatial(spatial);
     };
     check();
 

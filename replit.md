@@ -36,19 +36,29 @@ Incidents with null coordinates are automatically resolved on the frontend:
 - Full SVG US map (51 states including DC) via TopoJSON + d3-geo Albers USA projection
 - 20 gray camera pins spread across US (NY, CA, IL, TX, FL, WA, CO, GA, MA, PA, NV, MO, LA, DC)
 - Red severity-coded incident pins (critical/high/medium/low) with pulse animation
-- ALL incidents shown as pins (not filtered by videoUrl)
+- Only incidents with non-null videoUrl shown as pins (filtered by videoUrl)
 - Hover tooltips on pins (name, location, severity)
 - State hover shows camera/incident counts
 - State click opens detail panel with zoomed state outline and pin list
 - Inline video player for incidents with Firebase Storage videoUrl
 
 ## WebSpatial 3D
-- `enable-xr` attribute set via `ref.setAttribute()` in useEffect
-- `--xr-back: 150px` CSS var controls depth offset
+- Runtime: `@webspatial/core-sdk` IIFE loaded via `<script>` tag in index.html
+- Manifest: `client/public/spatial-manifest.json` with prefer_spatial + scene configs
+- Hooks: `client/src/hooks/use-spatial.ts` — `useIsSpatial()`, `useSpatialElement()`, `useOpenSpatialScene()`
+- `enable-xr` attribute applied via `useSpatialElement()` hook on panel/overlay refs
+- `--xr-back: 150px` CSS var controls depth offset (panel pops forward 150px on Vision Pro)
 - `--xr-background-material: glass.thick` for visionOS glass effect
-- Panel and overlay both spatialized at different depths
-- `html.is-spatial` class enables spatial-specific styles
+- Map container, header, footer all have `enable-xr` with different depth layers
+- `html.is-spatial` class auto-detected via runtime globals, user agent, or MutationObserver
+- Spatial detection: checks `window.__webspatial`, `window.XR_ENV`, `navigator.userAgent` for visionOS
 - 2D glass overlay fallback on regular browsers
+- Packages: `@webspatial/react-sdk`, `@webspatial/vite-plugin` (installed but vite plugin not in config due to restriction)
+
+## GitHub
+- Repo: `dhruvvootkuri/webspatial-incident-map`
+- Push script: `server/scripts/push-to-github.ts` (uses Replit GitHub integration)
+- NEVER auto-push without explicit user approval
 
 ## Database
 - Neon PostgreSQL via Drizzle ORM (NEON_DATABASE_URL)
