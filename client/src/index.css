@@ -267,6 +267,19 @@ html.is-spatial .state-detail-overlay {
 
 html.is-spatial .state-detail-panel {
   animation: panel-enter-spatial 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --xr-back: 150px;
+  --xr-background-material: glass.thick;
+}
+
+html.is-spatial .map-container {
+  --xr-back: 0px;
+  --xr-background-material: glass.regular;
+}
+
+html.is-spatial .map-header,
+html.is-spatial .map-footer {
+  --xr-back: 20px;
+  --xr-background-material: glass.thin;
 }
 
 @keyframes panel-enter-spatial {

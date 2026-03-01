@@ -13,6 +13,7 @@ import {
   Video,
 } from "lucide-react";
 import { US_STATES, projectToSvg, getStateForCoordinates } from "@/data/us-states";
+import { useIsSpatial, useSpatialElement } from "@/hooks/use-spatial";
 
 type CameraFeed = {
   id: number;
@@ -166,18 +167,18 @@ function StateDetailPanel({
   const pinScale = Math.max(1, Math.min(bbox.width, bbox.height) / 120);
   const panelRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
+  const isSpatial = useIsSpatial();
 
-  useEffect(() => {
-    if (panelRef.current) {
-      panelRef.current.setAttribute("enable-xr", "");
-      panelRef.current.style.setProperty("--xr-back", "150px");
-      panelRef.current.style.setProperty("--xr-background-material", "glass.thick");
-    }
-    if (overlayRef.current) {
-      overlayRef.current.setAttribute("enable-xr", "");
-      overlayRef.current.style.setProperty("--xr-back", "50px");
-    }
-  }, []);
+  useSpatialElement(panelRef, {
+    enabled: true,
+    back: 150,
+    backgroundMaterial: "glass.thick",
+  });
+
+  useSpatialElement(overlayRef, {
+    enabled: true,
+    back: 50,
+  });
 
   return (
     <div
@@ -417,8 +418,8 @@ export default function MapView() {
   }, [hoveredPin, cameras, incidents]);
 
   return (
-    <div className="h-screen w-screen bg-slate-950 flex flex-col overflow-hidden" data-testid="map-view">
-      <div className="flex items-center justify-between px-4 py-3 border-b border-slate-800 bg-slate-900/80 backdrop-blur-sm">
+    <div className="h-screen w-screen bg-slate-950 flex flex-col overflow-hidden map-container" data-testid="map-view" enable-xr="">
+      <div className="flex items-center justify-between px-4 py-3 border-b border-slate-800 bg-slate-900/80 backdrop-blur-sm map-header" enable-xr="">
         <div className="flex items-center gap-2">
           <Activity className="h-4 w-4 text-red-500" />
           <span className="text-sm font-semibold text-white tracking-wide" data-testid="map-title">INCIDENT MAP</span>
@@ -617,7 +618,7 @@ export default function MapView() {
         )}
       </div>
 
-      <div className="px-4 py-2 border-t border-slate-800 bg-slate-900/80 flex items-center justify-between">
+      <div className="px-4 py-2 border-t border-slate-800 bg-slate-900/80 flex items-center justify-between map-footer" enable-xr="">
         <div className="flex items-center gap-4">
           <span className="text-[10px] text-slate-500 font-mono" data-testid="stat-cameras">
             TOTAL CAMERAS: {activeCameras.length}

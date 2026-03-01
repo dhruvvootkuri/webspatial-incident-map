@@ -1,0 +1,28 @@
+{
+  "name": "Guardian Incident Map",
+  "short_name": "Guardian Map",
+  "description": "Interactive US incident map with WebSpatial 3D state pop-out, camera feed pins, and severity-coded incident pins",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#020617",
+  "theme_color": "#ef4444",
+  "prefer_spatial": true,
+  "spatial": {
+    "default_scene": {
+      "width": 1280,
+      "height": 800,
+      "resizable": true
+    },
+    "scenes": {
+      "state-detail": {
+        "width": 900,
+        "height": 600,
+        "resizable": true,
+        "style": {
+          "cornerRadius": 20,
+          "material": "glass.thick"
+        }
+      }
+    }
+  }
+}
